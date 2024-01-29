@@ -17,7 +17,11 @@ app.get("/photos", async (req, res) => {
   const albumId = req.query.albumId;
   client.get("photos", async (err, photos) => {
     if (err) console.log(err);
-    if (photos !== null) return res.json(JSON.parse(photos));
+    if (photos !== null) {
+      console.log("cache hit");
+      return res.json(JSON.parse(photos));
+    }
+    console.log('cache miss');
     const { data } = await axios.get(
       "https://jsonplaceholder.typicode.com/photos",
       {
